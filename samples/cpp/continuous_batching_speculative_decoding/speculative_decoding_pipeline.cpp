@@ -58,6 +58,8 @@ void SpeculativeDecodingPipeline::step() {
                 min_candidates_number = request.second;
             }
         }
+        
+        std::cout << "min_candidates_number: " << min_candidates_number << std::endl;
         // generate candidates by speculative model
         for (size_t i = 0; i < min_candidates_number; ++i) {
             m_speculative_pipeline.step();
@@ -82,6 +84,7 @@ void SpeculativeDecodingPipeline::step() {
         }
         OPENVINO_ASSERT(m_candidates_num >= max_removed_token_cnt);
         auto num_matches = m_candidates_num - max_removed_token_cnt;
+        std::cout << "num_matches: " << num_matches << std::endl;
         update_strategy(num_matches);
 
         // update to generate tokens
