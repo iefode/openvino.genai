@@ -485,6 +485,9 @@ Logits Sampler::_get_logit_vector(ov::Tensor logits, size_t batch_idx, size_t to
     ov::Shape logits_shape = logits.get_shape();
     size_t batch_size = logits_shape[0], seq_len = logits_shape[1], vocab_size = logits_shape[2];
     OPENVINO_ASSERT(batch_idx <= batch_size);
+    if (token_idx >= seq_len) {
+        std::cout << "token_idx: " << token_idx << " seq_len: " << seq_len << std::endl;
+    }
     OPENVINO_ASSERT(token_idx < seq_len);
     size_t batch_offset = batch_idx * seq_len * vocab_size;
     size_t sequence_offset = (seq_len - token_idx - 1) * vocab_size;
