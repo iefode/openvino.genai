@@ -20,6 +20,7 @@ ContinuousBatchingPipeline::ContinuousBatchingForSpeculativeDecodingImpl::Contin
 
 void
 ContinuousBatchingPipeline::ContinuousBatchingForSpeculativeDecodingImpl::finish_request(SequenceGroup::Ptr request) {
+    std::cout << "FINISH DRAFT REQ_ID: " << request->get_request_id() << std::endl;
     for (const auto& sequence : request->get_sequences()) {
         m_scheduler->free_sequence(sequence->get_id());
     }
@@ -294,6 +295,7 @@ void
 ContinuousBatchingPipeline::ContinuousBatchingForSpeculativeDecodingImpl::unlock_next_request_generation() {
     for (auto& request : m_requests) {
         if (!request->has_finished() && !request->can_generate_tokens()) {
+            std::cout << "START DRAFT REQ_ID: " << request->get_request_id() << std::endl;
             request->pause_generation(false);
             return;
         }
