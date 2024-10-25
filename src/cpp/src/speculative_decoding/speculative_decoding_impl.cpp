@@ -159,6 +159,8 @@ void ContinuousBatchingPipeline::SpeculativeDecodingImpl::step() {
         m_sd_metrics.update_acceptance_rate(request_id, acceptance_rate * 100);
         m_sd_metrics.update_draft_accepted_tokens(request_id, (updated_seq_info.inserted_tokens_cnt - updated_seq_info.removed_tokens_cnt));
     }
+    std::cout << "MAIN REQUEST COUNTER: " << main_generated_requests.size() << std::endl;
+    std::cout << "DRAFT REQUEST COUNTER: " << m_draft_pipeline->get_generated_requests().size() << std::endl;
 }
 
 std::vector<EncodedGenerationResult>

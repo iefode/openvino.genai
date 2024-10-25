@@ -600,6 +600,7 @@ public:
         if (out_of_memory()) {
             set_generation_status(GenerationStatus::IGNORED);
         } else if (has_finished()) {
+            if (m_num_validation_tokens)
             std::cout << "FINISHED REQ_ID: " << m_request_id << std::endl;
             set_generation_status(GenerationStatus::FINISHED);
         }
