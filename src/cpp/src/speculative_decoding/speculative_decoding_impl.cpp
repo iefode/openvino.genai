@@ -129,12 +129,18 @@ void ContinuousBatchingPipeline::SpeculativeDecodingImpl::step() {
         auto update_result = m_main_pipeline->update_request(candidate.first, candidate.second, false);
         update_sequence_info.insert({{candidate.first, update_result}});
     }
+    std::cout << "DRAFT START: " << std::endl;
+    print_generated_request(m_draft_pipeline->get_generated_requests());
+    std::cout << "DRAFT END: " << std::endl;
 
     ManualTimer main_timer("speculative_decoding: main_model: step()");
     main_timer.start();
     m_main_pipeline->step();
     main_timer.end();
     m_sd_metrics.main_duration += main_timer.get_duration();
+    std::cout << "MAIN START: " << std::endl;
+    print_generated_request(m_draft_pipeline->get_generated_requests());
+    std::cout << "MAIN END: " << std::endl;
 
     auto main_generated_requests = m_main_pipeline->get_generated_requests();
     for (const auto& checked_sequence : main_generated_requests) {

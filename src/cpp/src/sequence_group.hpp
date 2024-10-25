@@ -128,6 +128,9 @@ public:
 
     GenerationOutput get_last_generation_output(size_t token_cnt = 1) {
         GenerationOutput output;
+        if (m_generated_ids.empty()) {
+            std::cout << "EMPTY: REQ_ID:" << this->get_sequence_group_ptr()->get_request_id() << std::endl;
+        }
         OPENVINO_ASSERT(m_generated_ids.size());
         output.score = get_cumulative_log_probs();
 
