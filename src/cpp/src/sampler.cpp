@@ -719,6 +719,9 @@ SamplerOutput Sampler::sample(std::vector<SequenceGroup::Ptr> & sequence_groups,
                         // max counter of needed to be sampled tokens
                         OPENVINO_ASSERT(running_sequence->get_generated_len() >= token_offset);
                         size_t generated_and_verified_len = running_sequence->get_generated_len() - token_offset;
+                        if (sampling_params.max_new_tokens < generated_and_verified_len) {
+                            std::cout << "sampling_params.max_new_tokens: " << sampling_params.max_new_tokens << " " << running_sequence->get_generated_len() << " " << token_offset <<std::endl;
+                        }
                         OPENVINO_ASSERT(sampling_params.max_new_tokens >= generated_and_verified_len);
                         size_t max_num_sampled_token = sampling_params.max_new_tokens - generated_and_verified_len;
                         if (max_num_sampled_token == 0) {
