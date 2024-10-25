@@ -91,6 +91,7 @@ GenerationHandle
 ContinuousBatchingPipeline::SpeculativeDecodingImpl::add_request(uint64_t request_id,
                                                                  const std::string& prompt,
                                                                  ov::genai::GenerationConfig sampling_params) {
+    std::cout << "SAMPLING_PARAMS: " << request_id << " " << prompt << " " << sampling_params.max_new_tokens << std::endl;
     std::lock_guard<std::mutex> lock(m_draft_generations_mutex);
     m_draft_generations.insert({request_id, m_draft_pipeline->add_request(request_id, prompt, sampling_params)});
     return m_main_pipeline->add_request(request_id, prompt, sampling_params);
@@ -159,8 +160,12 @@ void ContinuousBatchingPipeline::SpeculativeDecodingImpl::step() {
         m_sd_metrics.update_acceptance_rate(request_id, acceptance_rate * 100);
         m_sd_metrics.update_draft_accepted_tokens(request_id, (updated_seq_info.inserted_tokens_cnt - updated_seq_info.removed_tokens_cnt));
     }
-    std::cout << "MAIN REQUEST COUNTER: " << main_generated_requests.size() << std::endl;
-    std::cout << "DRAFT REQUEST COUNTER: " << m_draft_pipeline->get_generated_requests().size() << std::endl;
+    std::cout << "MAIN REQUEST PRINT: ";
+    for (auto a : m_main_pipeline->get_generated_requests()) std::cout << a.first << " " << a.second.begin()->second.token_ids.size() << " | ";
+    std::cout << std::endl;
+    std::cout << "DRAFT REQUEST PRINT: ";
+        for (auto a : m_draft_pipeline->get_generated_requests()) std::cout << a.first << " " << a.second.begin()->second.token_ids.size() << " | ";
+    std::cout << std::endl;
 }
 
 std::vector<EncodedGenerationResult>
