@@ -129,7 +129,7 @@ public:
     GenerationOutput get_last_generation_output(size_t token_cnt = 1) {
         GenerationOutput output;
         if (m_generated_ids.empty()) {
-            std::cout << "EMPTY: REQ_ID:" << this->get_sequence_group_ptr()->get_request_id() << std::endl;
+            std::cout << "EMPTY!" << std::endl;
         }
         OPENVINO_ASSERT(m_generated_ids.size());
         output.score = get_cumulative_log_probs();
@@ -592,6 +592,9 @@ public:
             // todo: check seq.is_finished() to generate without several </s>
             // or is it ok to use padding?
             for (size_t i = 0; i < token_cnt; ++i) {
+                if (token_cnt) {
+                    std::cout << "PUSH: " << token_cnt << "REQ_ID: " << m_request_id << std::endl;
+                }
                 auto last_gen_token = sequence->get_last_generation_output(token_cnt);
                 outputs.emplace(sequence->get_grouped_id(), last_gen_token);
             }
