@@ -22,8 +22,12 @@ void
 ContinuousBatchingPipeline::ContinuousBatchingForSpeculativeDecodingImpl::finish_request(SequenceGroup::Ptr request) {
     std::cout << "FINISH DRAFT REQ_ID: " << request->get_request_id() << std::endl;
     for (const auto& sequence : request->get_sequences()) {
+        sequence->set_status(SequenceStatus::FINISHED);
+        sequence->set_finish_reason(GenerationFinishReason::STOP);
+
         m_scheduler->free_sequence(sequence->get_id());
     }
+    request->notify_handle();
     m_sampler->clear_request_info(request->get_request_id());
 }
 
