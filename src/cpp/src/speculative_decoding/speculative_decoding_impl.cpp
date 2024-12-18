@@ -53,7 +53,7 @@ ContinuousBatchingPipeline::SpeculativeDecodingImpl::SpeculativeDecodingImpl(con
         size_t main_cache_size = main_scheduler_config.cache_size * (1 - k),
                draft_cache_size = main_scheduler_config.cache_size - main_cache_size;
         if (draft_cache_size == 0) {
-            main_cache_size -= main_cache_size > 1 ? 1 : 0;
+            main_cache_size -= (main_cache_size > 1 ? 1 : 0);
             draft_cache_size = 1;
         }
 
