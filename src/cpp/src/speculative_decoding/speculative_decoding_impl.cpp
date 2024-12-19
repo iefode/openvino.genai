@@ -46,8 +46,8 @@ ContinuousBatchingPipeline::SpeculativeDecodingImpl::SpeculativeDecodingImpl(con
                                draft_scheduler_config = is_scheduler_undefined ? main_scheduler_config : draft_model_desc.scheduler_config;
     if (is_scheduler_undefined) {
         // split KV cache to 2 caches for main and draft models
-        size_t main_model_cache_size = utils::get_kv_cache_size(main_model),
-               draft_model_cache_size = utils::get_kv_cache_size(draft_model);
+        size_t main_model_cache_size = utils::get_hidden_size(main_model),
+               draft_model_cache_size = utils::get_hidden_size(draft_model);
         auto k = static_cast<float>(draft_model_cache_size) / (main_model_cache_size + draft_model_cache_size);
 
         size_t main_cache_size = std::ceil(main_scheduler_config.cache_size * (1.f - k)),
