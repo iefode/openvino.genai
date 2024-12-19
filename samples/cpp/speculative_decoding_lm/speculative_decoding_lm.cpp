@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) try {
     std::string main_device = "CPU", draft_device = "CPU";
 
     ov::genai::SchedulerConfig scheduler_config;
-    scheduler_config.cache_size = 5;
+    scheduler_config.cache_size = 1;
 
     ov::genai::LLMPipeline pipe(
         main_model_path,
